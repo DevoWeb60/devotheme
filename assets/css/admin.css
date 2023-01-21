@@ -1,0 +1,8 @@
+.manage-column.column-thumbnail {
+    width: 150px;
+}
+
+.thumbnail.column-thumbnail img {
+    border-radius: 5px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+}

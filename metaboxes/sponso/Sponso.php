@@ -1,9 +1,12 @@
 <?php
 
+namespace devotheme;
+
 class SponsoMetaBox
 {
     const META_KEY = 'devotheme_sponsoring';
     const NONCE = '_devotheme_sponsoring_nonce';
+    const IS_SPONSORED = 1;
 
     public static function register()
     {
@@ -34,7 +37,7 @@ class SponsoMetaBox
             if ($_POST[self::META_KEY] == 0) {
                 delete_post_meta($post_id, self::META_KEY);
             } else {
-                update_post_meta($post_id, self::META_KEY, 1);
+                update_post_meta($post_id, self::META_KEY, self::IS_SPONSORED);
             }
         }
     }
@@ -43,10 +46,10 @@ class SponsoMetaBox
     {
         $value = get_post_meta($post->ID, self::META_KEY, true);
         wp_nonce_field(self::NONCE, self::NONCE);
-?>
-        <input type="hidden" name="<?= self::META_KEY ?>" value="0">
-        <input type="checkbox" name="<?= self::META_KEY ?>" id="devothemesponso" value="1" <?php checked($value, '1'); ?>>
-        <label for="devothemesponso">Cet article est-il sponsorisé ?</label>
-<?php
+        get_template_part('metaboxes/sponso', 'checkbox', [
+            'value' => $value,
+            'meta-key' => self::META_KEY,
+            'sponsorized' => self::IS_SPONSORED,
+        ]);
     }
 }

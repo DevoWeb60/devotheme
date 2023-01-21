@@ -6,12 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php wp_head(); ?>
+    <style>
+        .custom_header_bg {
+            background-color: <?= get_theme_mod('devotheme_header_background_color') ?>;
+        }
+
+        .custom_color_text {
+            color: <?= get_theme_mod('devotheme_header_text_color') ?> !important;
+        }
+
+        .custom_footer_bg {
+            background-color: <?= get_theme_mod('devotheme_footer_background_color') ?>;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar bg-dark navbar-expand-lg" data-bs-theme="dark">
+    <nav class="navbar custom_header_bg navbar-expand-lg" data-bs-theme="dark">
         <div class="container">
-            <a class="navbar-brand" href="#"><?php bloginfo('name'); ?></a>
+            <a class="navbar-brand custom_color_text" href="#"><?php bloginfo('name'); ?></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

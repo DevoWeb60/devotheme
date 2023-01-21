@@ -1,77 +1,57 @@
 <?php
 
-function devotheme_setup()
-{
-    add_theme_support('title-tag');
-    add_theme_support('post-thumbnails');
-    add_theme_support('menus');
-    register_nav_menu('header', 'Menu principal');
-    register_nav_menu('footer', 'Pied de page');
-    add_image_size('card-image', 350, 215, true);
-}
 
-function devotheme_init()
-{
-    register_taxonomy('sport', 'post', [
-        'labels' => [
-            'name' => 'Sport',
-            'singular_name' => 'Sport',
-            'plural_name' => 'Sports',
-            'search_items' => 'Rechercher des sports',
-            'all_items' => 'Tous les sports',
-            'edit_item' => 'Editer le sport',
-            'update_item' => 'Mettre à jour le sport',
-            'add_new_item' => 'Ajouter un nouveau sport',
-            'new_item_name' => 'Ajouter un nouveau sport',
-            'menu_name' => 'Sports',
-            'not_found' => 'Aucun sport trouvé',
-        ],
-        'show_in_rest' => true,
-        'hierarchical' => true,
-        'show_admin_column' => true,
-    ]);
-}
+// CORE
+require_once('walker/CommentWalker.php');
+require_once('class/Query.php');
+require_once('class/Setup.php');
+require_once('class/EnqueueAssets.php');
+require_once('class/NavMenu.php');
+require_once('class/AfterSwitchTheme.php');
+require_once('class/Customize.php');
 
-function devotheme_register_assets()
-{
-    wp_register_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css');
-    wp_register_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js', [], false, true);
-    wp_enqueue_style('bootstrap');
-    wp_enqueue_script('bootstrap');
-}
+// REWRITE
+require_once('post-type/article/Article.php');
 
-function devotheme_menu_class($classes)
-{
-    $classes[] = 'nav-item';
-    return $classes;
-}
+// FEATURES
+require_once('options/agence/Agence.php');
+require_once('metaboxes/sponso/Sponso.php');
+require_once('post-type/bien/Bien.php');
+require_once('taxonomy/sport/SportTaxonomy.php');
+require_once('taxonomy/bien/BienTaxonomy.php');
 
-function devotheme_menu_link_attributes($attrs)
-{
-    $attrs['class'] = 'nav-link';
-    return $attrs;
-}
-
-function devotheme_document_title_parts($title)
-{
-    unset($title['tagline']);
-    return $title;
-}
-
-function devotheme_title_separator()
-{
-    return '|';
-}
+// WIDGETS
+require_once('widgets/youtube/YoutubeWidget.php');
 
 
-add_action('after_setup_theme', 'devotheme_setup');
-add_action('init', 'devotheme_init');
-add_action('wp_enqueue_scripts', 'devotheme_register_assets');
+// CORE 
+devotheme\AfterSwitchTheme::register();
+add_action('init', function () {
+    // POST TYPES
+    devotheme\Bien::register_post_type();
 
-add_filter('document_title_separator', 'devotheme_title_separator');
-add_filter('document_title_parts', 'devotheme_document_title_parts');
-add_filter('nav_menu_css_class', 'devotheme_menu_class');
-add_filter('nav_menu_link_attributes', 'devotheme_menu_link_attributes');
+    // TAXONOMIES
+    // POST
+    devotheme\SportTaxonomy::register_taxonomy();
+    // BIENS
+    devotheme\BienTaxonomy::register_bien_type();
+    devotheme\BienTaxonomy::register_dpe();
+});
+devotheme\Query::register();
+devotheme\Setup::register();
+devotheme\EnqueueAssets::register();
+devotheme\NavMenu::register();
 
-require_once('metaboxes/sponso.php');
-SponsoMetaBox::register();
+
+// REWRITE 
+devotheme\Article::register();
+
+// FEATURES
+devotheme\SponsoMetaBox::register();
+devotheme\Agence::register();
+
+// CUSTOMIZE
+devotheme\Customize::register();
+
+// WIDGETS 
+devotheme\YoutubeWidgetInit::register();

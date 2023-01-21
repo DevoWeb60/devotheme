@@ -1,7 +1,5 @@
 <?php get_header(); ?>
-<h1>Hello World : </h1>
-
-<?php get_template_part('parts/sport', 'list'); ?>
+<h1>Archive des biens</h1>
 
 <?php if (have_posts()) : ?>
     <div class="row">
@@ -12,10 +10,7 @@
         <?php endwhile ?>
     </div>
 <?php else : ?>
-    <h1>Aucun article</h1>
+    <h1>Aucun biens</h1>
 <?php endif; ?>
-
-
-
 
 <?php get_footer(); ?>
