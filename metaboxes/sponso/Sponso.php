@@ -46,7 +46,7 @@ class SponsoMetaBox
     {
         $value = get_post_meta($post->ID, self::META_KEY, true);
         wp_nonce_field(self::NONCE, self::NONCE);
-        get_template_part('metaboxes/sponso', 'checkbox', [
+        get_template_part('metaboxes/sponso/sponso', 'checkbox', [
             'value' => $value,
             'meta-key' => self::META_KEY,
             'sponsorized' => self::IS_SPONSORED,
