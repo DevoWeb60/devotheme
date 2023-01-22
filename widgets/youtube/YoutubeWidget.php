@@ -57,11 +57,11 @@ class YoutubeWidgetInit
         register_widget(YoutubeWidget::class);
         register_sidebar([
             'id' => 'sidebar-homepage',
-            'name' => 'Sidebar Accueil',
+            'name' => __('Sidebar Accueil', 'devotheme'),
             'before_sidebar' =>
             '<div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 380px;">
         <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
-                <span class="fs-5 fw-semibold">SideBar Accueil</span>
+                <span class="fs-5 fw-semibold">' . __('SideBar Accueil', 'devotheme') . '</span>
         </a>
         <div class="list-group list-group-flush border-bottom scrollarea">',
             'after_sidebar' => '</div></div>',

@@ -8,6 +8,7 @@ class Setup
     public static function register()
     {
         add_action('after_setup_theme', [self::class, 'setup']);
+        add_filter('rest_authentication_errors', [self::class, 'privateAPI']);
     }
 
     public static function setup()
@@ -19,5 +20,22 @@ class Setup
         register_nav_menu('header', 'Menu principal');
         register_nav_menu('footer', 'Pied de page');
         add_image_size('card-image', 350, 215, true);
+        load_theme_textdomain('devotheme', get_template_directory() . '/languages');
+    }
+
+    public static function privateAPI($result)
+    {
+        if (true === $result || is_wp_error($result)) {
+            return $result;
+        }
+
+        if (!is_user_logged_in()) {
+            return new \WP_Error(
+                'rest_not_logged_in',
+                __('You are not currently logged in.'),
+                array('status' => 401)
+            );
+        }
+        return $result;
     }
 }
