@@ -8,6 +8,7 @@ class Setup
     public static function register()
     {
         add_action('after_setup_theme', [self::class, 'setup']);
+        add_filter('rest_authentication_errors', [self::class, 'devotheme_API'], 9);
         add_filter('rest_authentication_errors', [self::class, 'privateAPI']);
     }
 
@@ -35,6 +36,18 @@ class Setup
                 __('You are not currently logged in.'),
                 array('status' => 401)
             );
+        }
+        return $result;
+    }
+
+    /**
+     * @var WP $wp
+     */
+    public static function devotheme_API($result)
+    {
+        global $wp;
+        if (strpos($wp->query_vars['rest_route'], 'devotheme/v1') !== false) {
+            return true;
         }
         return $result;
     }

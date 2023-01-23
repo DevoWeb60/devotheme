@@ -65,3 +65,39 @@ devotheme\YoutubeWidgetInit::register();
 
 // $results = $wpdb->get_results("SELECT name FROM {$wpdb->terms} WHERE slug='cyclisme'");
 // dump($results);
+
+
+// API REST 
+add_action('rest_api_init', function () {
+    register_rest_route('devotheme/v1', '/biens/(?P<id>\d+)', [
+        'methods' => 'GET',
+        'callback' => function (WP_REST_Request $request) {
+            $postId = (int)$request->get_param('id');
+            $post = get_post($postId);
+            if ($post === null) {
+                return new WP_Error('no_post', 'Aucun bien trouvé', ['status' => 404]);
+            }
+            return ["title" => $post->post_title];
+        }
+    ]);
+});
+
+function readData()
+{
+    $data = wp_cache_get('data', 'devotheme');
+    if ($data === false) {
+        var_dump("Je lis");
+        $data = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'data');
+        wp_cache_set('data', $data, 'devotheme', 60);
+    }
+
+    return $data;
+}
+// Extension : W3 Total Cache
+
+if (isset($_GET['cachetest'])) {
+    var_dump(readData());
+    var_dump(readData());
+    var_dump(readData());
+    die();
+}
